@@ -13,7 +13,7 @@ export default {
     },
     methods:{
         handleSearch(){
-            this.$emit('searchRequested',this.query);
+            this.$emit('search',this.query);
             this.query=''
         }
     }
@@ -24,6 +24,7 @@ export default {
     display: flex;
     justify-content: center;
     width: 100%;
+    margin-top: 15px;
 }
 .search input{
     padding: 10px 20px;

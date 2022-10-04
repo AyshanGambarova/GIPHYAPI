@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <p v-if="isLoading">Loading...</p>
-    <Search @searchRequested="handleSearch" />
+    <Search @search="handleSearch" />
     <Preview :gifs="gifs" />
   </div>
 </template>
@@ -19,12 +19,8 @@ export default {
     };
   },
   methods: {
-    handleSearch(query) {
-      this.gifs = [];
-      this.isLoading = true;
-      fetch(
-        `https://api.giphy.com/v1/gifs/search?q=${query}&api_key=57VVkqEbr5L8i3xHXhIejE6OYloA967H&limit=25&rating=g&limit=25`
-      )
+    doQuery(url){
+      fetch(url)
         .then(res => {
           return res.json();
         })
@@ -32,19 +28,17 @@ export default {
           this.gifs = res.data;
           this.isLoading = false;
         });
+    },
+    handleSearch(query) {
+      this.gifs = [];
+      this.isLoading = true;
+       const url= `https://api.giphy.com/v1/gifs/search?q=${query}&api_key=57VVkqEbr5L8i3xHXhIejE6OYloA967H&limit=25&rating=g&limit=25`
+      this.doQuery(url);
     }
   },
   created() {
-    fetch(
-      `https://api.giphy.com/v1/gifs/trending?api_key=57VVkqEbr5L8i3xHXhIejE6OYloA967H&limit=25&rating=g&limit=25`
-    )
-      .then(res => {
-        return res.json();
-      })
-      .then(res => {
-        this.gifs = res.data;
-        this.isLoading = false;
-      });
+     const url= `https://api.giphy.com/v1/gifs/trending?api_key=57VVkqEbr5L8i3xHXhIejE6OYloA967H&limit=25&rating=g&limit=25`
+    this.doQuery(url);
   }
 };
 </script>
